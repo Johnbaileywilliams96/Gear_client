@@ -1,15 +1,16 @@
 "use client"
 
 import { useState, useEffect } from "react";
-import { getUsers } from "../data/users";
 import Navbar from "../Components/navbar";
+import { getProfiles } from "../data/profiles";
+
 
 export default function Profile() {
   const [profiles, setProfiles] = useState([])
 
   
   useEffect(() => {
-    getUsers()
+    getProfiles()
       .then(data => {
         setProfiles(data)
   
@@ -23,9 +24,12 @@ export default function Profile() {
       <div>
         {profiles.map((profile, index) => {
           return (
+            <>
             <div key={index}>
-              <p>{profile.email}</p>
+              <p>{profile.bio}</p>
             </div>
+            
+            </>
           )
         })}
       </div>
