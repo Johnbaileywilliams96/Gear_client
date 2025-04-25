@@ -13,6 +13,6 @@ export function getPostsById(id) {
             .then(response => response.json())
             .catch(error => {
                 console.error('Error fetching post:', error);
-                throw error; // Re-throw the error so calling code can handle it
+                throw error;
             });
 }
