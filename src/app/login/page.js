@@ -3,6 +3,7 @@
 import Link from 'next/link'
 // import { useRouter } from 'next/router'
 import { useRef } from 'react'
+import Layout from '../Components/layout'
 // import { Input } from '../components/form-elements'
 // import Layout from '../components/layout'
 // import Navbar from '../components/navbar'
@@ -63,11 +64,11 @@ export default function Login() {
   )
 }
 
-// Login.getLayout = function getLayout(page) {
-//   return (
-//     <Layout>
-//       <Navbar />
-//       {page}
-//     </Layout>
-//   )
-// }
+Login.getLayout = function getLayout(page) {
+  return (
+    <Layout>
+      <Navbar />
+      {page}
+    </Layout>
+  )
+}

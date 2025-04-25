@@ -1,6 +1,9 @@
+"use client"
+
+
 import Link from 'next/link'
 // import { useRouter } from 'next/router'
-// import { useRef } from 'react'
+import { useRef } from 'react'
 // import { input } from '../components/form-elements'
 // import Layout from '../components/layout'
 // import Navbar from '../components/navbar'
@@ -10,11 +13,11 @@ import Link from 'next/link'
 export default function Register() {
   // const {setToken} = useAppContext()
 
-  // const firstName = useRef('')
-  // const lastName = useRef('')
-  // const username = useRef('')
-  // const password = useRef('')
-  // const email = useRef('')
+  const firstName = useRef('')
+  const lastName = useRef('')
+  const username = useRef('')
+  const password = useRef('')
+  const email = useRef('')
   // const phone_number = useRef('')
   // const address = useRef('')
   // const router = useRouter()
@@ -30,8 +33,6 @@ export default function Register() {
       password: password.current.value,
       first_name: firstName.current.value,
       last_name: lastName.current.value,
-      phone_number: phone_number.current.value,
-      address: address.current.value
     }
 
     register(user).then((res) => {
@@ -88,19 +89,7 @@ export default function Register() {
             type="text"
             label="Email"
           />
-          <input
-            id="phone_number"
-            refEl={phone_number}
-            type="text"
-            label="Phone Number"
-          />
-          <input
-            id="address"
-            refEl={address}
-            type="text"
-            label="Address"
-           />
-
+      
           <div className="field is-grouped">
             <div className="control">
               <button className="button is-link" onClick={submit}>Submit</button>
@@ -117,11 +106,11 @@ export default function Register() {
   )
 }
 
-// Register.getLayout = function getLayout(page) {
-//   return (
-//     <Layout>
-//       <Navbar />
-//       {page}
-//     </Layout>
-//   )
-// }
+Register.getLayout = function getLayout(page) {
+  return (
+    <Layout>
+      <Navbar />
+      {page}
+    </Layout>
+  )
+}
