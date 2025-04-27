@@ -1,74 +1,80 @@
-'use client'
+"use client"
 
-import Link from 'next/link'
-// import { useRouter } from 'next/router'
-import { useRef } from 'react'
-import Layout from '../Components/layout'
-// import { Input } from '../components/form-elements'
-// import Layout from '../components/layout'
-// import Navbar from '../components/navbar'
-// import { useAppContext } from '../context/state'
-// import { login } from '../data/auth'
+import React, { useRef, useState } from "react"
+import { useRouter } from "next/navigation"
+import Link from "next/link"
 
+// Change from named export to default export
 export default function Login() {
-  // const {setToken} = useAppContext()
-  const username = useRef('')
-  const password = useRef('')
-  // const router = useRouter()
+    const [email, setEmail] = useState("steve@brownlee.com")
+    const [password, setPassword] = useState("brownlee")
+    const existDialog = useRef()
+    // Use Next.js router instead of React Router's navigate
+    const router = useRouter()
 
-  const submit = (e) => {
-    e.preventDefault()
-    const user = {
-      username: username.current.value,
-      password: password.current.value,
+    const handleLogin = (e) => {
+        e.preventDefault()
+        fetch(`http://localhost:8000/login`, {
+            method: "POST",
+            body: JSON.stringify({ email, password }),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(res => res.json())
+            .then(authInfo => {
+                if (authInfo.valid) {
+                    localStorage.setItem("gear_token", JSON.stringify(authInfo))
+                    // Change navigate to router.push
+                    router.push("/home")
+                } else {
+                    existDialog.current.showModal()
+                }
+            })
     }
 
-    login(user).then((res) => {
-      if (res.token) {
-        setToken(res.token)
-        router.push('/')
-      }
-    })
-  }
+    return (
+        <main className="container--login">
+            <dialog className="dialog dialog--auth" ref={existDialog}>
+                <div>User does not exist</div>
+                <button className="button--close" onClick={e => existDialog.current.close()}>Close</button>
+            </dialog>
 
-  return (
-    <div className="columns is-centered">
-      <div className="column is-half">
-        <form className="box">
-          <h1 className="title">Welcome Back!</h1>
-          <input
-            id="username"
-            refEl={username}
-            type="text"
-            label="Username"
-          />
-          <input
-            id="password"
-            refEl={password}
-            type="password"
-            label="Password"
-          />
-          <div className="field is-grouped">
-            <div className="control">
-              <button className="button is-link" onClick={submit}>Login</button>
+            <section>
+                <form className="form--login" onSubmit={handleLogin}>
+                    <h1 className="text-4xl mt-7 mb-3">Rock of Ages</h1>
+                    <h2 className="text-xl mb-10">Please sign in</h2>
+                    <fieldset className="mb-4">
+                        <label htmlFor="inputEmail"> Email address </label>
+                        <input type="email" id="inputEmail"
+                            value={email}
+                            onChange={evt => setEmail(evt.target.value)}
+                            className="form-control"
+                            placeholder="Email address"
+                            required autoFocus />
+                    </fieldset>
+                    <fieldset className="mb-4">
+                        <label htmlFor="inputPassword"> Password </label>
+                        <input type="password" id="inputPassword"
+                            value={password}
+                            onChange={evt => setPassword(evt.target.value)}
+                            className="form-control"
+                            placeholder="Password"
+                        />
+                    </fieldset>
+                    <fieldset>
+                        <button type="submit" className="button p-3 rounded-md bg-blue-800 text-blue-100">
+                            Sign in
+                        </button>
+                    </fieldset>
+                </form>
+            </section>
+            <div className="loginLinks">
+                <section className="link--register">
+                    {/* Change React Router Link to Next.js Link */}
+                    <Link className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600" href="/register">Not a member yet?</Link>
+                </section>
             </div>
-            <div className="control">
-              <Link href="/register">
-                <button className="button is-link is-light">Register</button>
-              </Link>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  )
-}
-
-Login.getLayout = function getLayout(page) {
-  return (
-    <Layout>
-      <Navbar />
-      {page}
-    </Layout>
-  )
+        </main>
+    )
 }

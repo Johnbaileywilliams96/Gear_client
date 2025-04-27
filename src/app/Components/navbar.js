@@ -40,7 +40,7 @@ export default function Navbar() {
             Home
           </Link>
           <Link href="/login" className="bg-white text-black px-4 py-2 rounded-md hover:bg-gray-100">
-            Login
+            Logout
           </Link>
         </div>
 
@@ -55,7 +55,7 @@ export default function Navbar() {
                 Profiles
               </Link>
               <Link href="/login" className="bg-white text-black px-4 py-2 rounded-md hover:bg-gray-100 text-center">
-                Login
+                Logout
               </Link>
             </div>
           </div>

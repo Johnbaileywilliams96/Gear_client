@@ -1,116 +1,101 @@
 "use client"
 
-
-import Link from 'next/link'
-// import { useRouter } from 'next/router'
-import { useRef } from 'react'
-// import { input } from '../components/form-elements'
-// import Layout from '../components/layout'
-// import Navbar from '../components/navbar'
-// import { useAppContext } from '../context/state'
-// import { register } from '../data/auth'
+import React, { useRef, useState } from "react"
+import { useRouter } from "next/navigation"
+import Link from "next/link"
 
 export default function Register() {
-  // const {setToken} = useAppContext()
+    const [email, setEmail] = useState("Email")
+    const [password, setPassword] = useState("password")
+    const [firstName, setFirstName] = useState("first_name")
+    const [lastName, setLastName] = useState("Last_name")
+    const existDialog = useRef()
+    const router = useRouter()
 
-  const firstName = useRef('')
-  const lastName = useRef('')
-  const username = useRef('')
-  const password = useRef('')
-  const email = useRef('')
-  // const phone_number = useRef('')
-  // const address = useRef('')
-  // const router = useRouter()
-
-
-
-  const submit = (e) => {
-    e.preventDefault()
-
-    const user = {
-      username: username.current.value,
-      email: username.current.value,
-      password: password.current.value,
-      first_name: firstName.current.value,
-      last_name: lastName.current.value,
+    const handleRegister = (e) => {
+        e.preventDefault()
+        fetch(`http://localhost:8000/register`, {
+            method: "POST",
+            body: JSON.stringify({
+                email,
+                password,
+                first_name: firstName,
+                last_name: lastName
+            }),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(res => res.json())
+            .then(authInfo => {
+                if (authInfo && authInfo.token) {
+                    localStorage.setItem("gear_token", JSON.stringify(authInfo))
+                    router.push("/login")
+                } else {
+                    existDialog.current.showModal()
+                }
+            })
     }
 
-    register(user).then((res) => {
-      console.log(res)
-      if (res.token) {
-        setToken(res.token)
-        router.push('/')
-      }
-    })
-  }
+    return (
+        <main className="container--login">
+            <dialog className="dialog dialog--auth" ref={existDialog}>
+                <div>User does not exist</div>
+                <button className="button--close" onClick={e => existDialog.current.close()}>Close</button>
+            </dialog>
 
-//   login(user).then((res) => {
-//     if (res.token) {
-//       setToken(res.token)
-//       router.push('/')
-//     }
-//   })
-// }
-
-
-  return (
-    <div className="columns is-centered">
-      <div className="column is-half">
-        <form className="box">
-          <h1 className="title">Welcome!</h1>
-          <input
-            id="firstName"
-            refEl={firstName}
-            type="text"
-            label="First Name"
-          />
-          <input
-            id="lastName"
-            refEl={lastName}
-            type="text"
-            label="Last Name"
-          />
-
-          <input
-            id="username"
-            refEl={username}
-            type="text"
-            label="Username"
-          />
-          <input
-            id="password"
-            refEl={password}
-            type="password"
-            label="Password"
-          />
-          <input
-            id="email"
-            refEl={email}
-            type="text"
-            label="Email"
-          />
-      
-          <div className="field is-grouped">
-            <div className="control">
-              <button className="button is-link" onClick={submit}>Submit</button>
+            <section>
+                <form className="form--login" onSubmit={handleRegister}>
+                    <h1 className="text-4xl mt-7 mb-3">Rock of Ages</h1>
+                    <h2 className="text-xl mb-10">Register new account</h2>
+                    <fieldset className="mb-4">
+                        <label htmlFor="firstName"> First name </label>
+                        <input type="text" id="firstName"
+                            value={firstName}
+                            onChange={evt => setFirstName(evt.target.value)}
+                            className="form-control"
+                            placeholder=""
+                            required autoFocus />
+                    </fieldset>
+                    <fieldset className="mb-4">
+                        <label htmlFor="lastName"> Last name </label>
+                        <input type="text" id="lastName"
+                            value={lastName}
+                            onChange={evt => setLastName(evt.target.value)}
+                            className="form-control"
+                            placeholder=""
+                            required autoFocus />
+                    </fieldset>
+                    <fieldset className="mb-4">
+                        <label htmlFor="inputEmail"> Email address </label>
+                        <input type="email" id="inputEmail"
+                            value={email}
+                            onChange={evt => setEmail(evt.target.value)}
+                            className="form-control"
+                            placeholder="Email address"
+                            required autoFocus />
+                    </fieldset>
+                    <fieldset className="mb-4">
+                        <label htmlFor="inputPassword"> Password </label>
+                        <input type="password" id="inputPassword"
+                            value={password}
+                            onChange={evt => setPassword(evt.target.value)}
+                            className="form-control"
+                            placeholder="Password"
+                        />
+                    </fieldset>
+                    <fieldset>
+                        <button type="submit" className="button p-3 rounded-md bg-blue-800 text-blue-100">
+                            Register
+                        </button>
+                    </fieldset>
+                </form>
+            </section>
+            <div className="loginLinks">
+                <section className="link--register">
+                    <Link className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600" href="/login">Already have an account?</Link>
+                </section>
             </div>
-            <div className="control">
-              <Link href="/login">
-                <button className="button is-link is-light">Cancel</button>
-              </Link>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  )
-}
-
-Register.getLayout = function getLayout(page) {
-  return (
-    <Layout>
-      <Navbar />
-      {page}
-    </Layout>
-  )
+        </main>
+    )
 }
