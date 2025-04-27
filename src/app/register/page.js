@@ -30,7 +30,7 @@ export default function Register() {
             .then(authInfo => {
                 if (authInfo && authInfo.token) {
                     localStorage.setItem("gear_token", JSON.stringify(authInfo))
-                    router.push("/login")
+                    router.push("/")
                 } else {
                     existDialog.current.showModal()
                 }

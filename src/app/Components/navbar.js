@@ -1,13 +1,28 @@
 "use client"
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const router = useRouter()
+
+  // Check login status when component mounts
+  useEffect(() => {
+    const token = localStorage.getItem("gear_token")
+    setIsLoggedIn(token !== null)
+  }, [])
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem("gear_token")
+    setIsLoggedIn(false)
+    router.push('/')
   }
 
   return (
@@ -30,34 +45,67 @@ export default function Navbar() {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-8">
-          <Link href="/posts" className="text-black hover:text-gray-700">
-            Posts
-          </Link>
-          <Link href="/profile" className="text-black hover:text-gray-700">
-            Profile
-          </Link>
-          <Link href="/home" className="text-black hover:text-gray-700">
-            Home
-          </Link>
-          <Link href="/login" className="bg-white text-black px-4 py-2 rounded-md hover:bg-gray-100">
-            Logout
-          </Link>
+          {isLoggedIn ? (
+            <>
+              <Link href="/posts" className="text-black hover:text-gray-700">
+                Posts
+              </Link>
+              <Link href="/profile" className="text-black hover:text-gray-700">
+                Profile
+              </Link>
+              <Link href="/home" className="text-black hover:text-gray-700">
+                Home
+              </Link>
+              <button 
+                onClick={handleLogout}
+                className="bg-white text-black px-4 py-2 rounded-md hover:bg-gray-100"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link href="/login" className="text-black hover:text-gray-700">
+                Login
+              </Link>
+              <Link href="/register" className="bg-white text-black px-4 py-2 rounded-md hover:bg-gray-100">
+                Register
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden absolute top-20 left-0 right-0 bg-yellow-400 p-4 shadow-md z-50">
-            <div className="flex flex-col space-y-3">
-              <Link href="/posts" className="text-black hover:text-gray-700 py-2">
-                Posts
-              </Link>
-              <Link href="/profile" className="text-black hover:text-gray-700 py-2">
-                Profiles
-              </Link>
-              <Link href="/login" className="bg-white text-black px-4 py-2 rounded-md hover:bg-gray-100 text-center">
-                Logout
-              </Link>
-            </div>
+          <div className="md:hidden absolute top-20 right-0 left-0 bg-yellow-400 p-4 shadow-md">
+            {isLoggedIn ? (
+              <div className="flex flex-col space-y-4">
+                <Link href="/posts" className="text-black hover:text-gray-700">
+                  Posts
+                </Link>
+                <Link href="/profile" className="text-black hover:text-gray-700">
+                  Profile
+                </Link>
+                <Link href="/home" className="text-black hover:text-gray-700">
+                  Home
+                </Link>
+                <button 
+                  onClick={handleLogout}
+                  className="text-left text-black hover:text-gray-700"
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <div className="flex flex-col space-y-4">
+                <Link href="/login" className="text-black hover:text-gray-700">
+                  Login
+                </Link>
+                <Link href="/register" className="text-black hover:text-gray-700">
+                  Register
+                </Link>
+              </div>
+            )}
           </div>
         )}
       </div>

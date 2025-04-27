@@ -26,7 +26,7 @@ export default function Login() {
                 if (authInfo.valid) {
                     localStorage.setItem("gear_token", JSON.stringify(authInfo))
                     // Change navigate to router.push
-                    router.push("/home")
+                    router.push("/")
                 } else {
                     existDialog.current.showModal()
                 }

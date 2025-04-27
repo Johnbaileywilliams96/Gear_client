@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { getPosts } from "../data/posts";
 import { PostCard } from "../Components/postlayout/card";
-import Navbar from "../Components/navbar";
+
 
 export default function Posts() {
   const [posts, setPosts] = useState([])
@@ -14,7 +14,7 @@ export default function Posts() {
 
   return (
     <>
-    <Navbar/>
+
       <div>
         {posts.map((post, index) => {
           return (
