@@ -4,7 +4,6 @@ export function CommentsCard({comment}){
         <>
         <div>
             <p>{comment.content}</p>
-            {/* <p>{comment.user.username}</p> */}
         </div>
         </>
     )

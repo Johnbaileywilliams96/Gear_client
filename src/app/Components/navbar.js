@@ -74,6 +74,9 @@ export default function Navbar() {
               <Link href="/home" className="text-sm text-black hover:text-gray-700">
                 Home
               </Link>
+              <Link href="/create" className="text-sm text-black hover:text-gray-700">
+                create
+              </Link>
               <button 
                 onClick={handleLogout}
                 className="bg-white text-black text-sm px-3 py-1 rounded-md hover:bg-gray-100"
@@ -107,6 +110,9 @@ export default function Navbar() {
                 <Link href="/home" className="text-sm text-black hover:text-gray-700">
                   Home
                 </Link>
+                <Link href="/create" className="text-sm text-black hover:text-gray-700">
+                create
+              </Link>
                 <button 
                   onClick={handleLogout}
                   className="text-left text-sm text-black hover:text-gray-700"

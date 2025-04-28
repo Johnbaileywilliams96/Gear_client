@@ -16,3 +16,15 @@ export function getPostsById(id) {
                 throw error;
             });
 }
+
+export function addPost() {
+    return fetch('http://localhost:8000/posts', {
+        method: 'POST',
+        headers: {
+            Authorization: `Token ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        }
+    })
+            .then(response => response.json())
+            .catch(error => console.error('Error adding post:', error));
+}

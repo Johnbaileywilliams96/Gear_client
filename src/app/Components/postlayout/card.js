@@ -8,9 +8,6 @@ export function PostCard({post}) {
             <div className="bg-cyan-50 p-3 rounded">
                 <p className="text-gray-700">{post.description}</p>
             </div>
-            {/* <div className="bg-cyan-50 p-3 rounded">
-                <p className="text-gray-700">{post.user.username}</p>
-            </div> */}
         </div>
     )
 }
