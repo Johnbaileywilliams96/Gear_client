@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 
 import { getProfiles } from "../data/profiles";
+import Navbar from "../Components/navbar";
 
 
 export default function Profile() {
@@ -22,6 +23,7 @@ export default function Profile() {
     <>
    
       <div>
+        <Navbar/>
         {profiles.map((profile, index) => {
           return (
             <div key={index}>

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { getPosts } from "../data/posts";
 import { PostCard } from "../Components/postlayout/card";
+import Navbar from "../Components/navbar";
 
 
 export default function Posts() {
@@ -16,6 +17,7 @@ export default function Posts() {
     <>
 
       <div>
+        <Navbar/>
         {posts.map((post, index) => {
           return (
             <div key={index}>

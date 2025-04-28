@@ -6,6 +6,7 @@ import { getPostsById } from "@/app/data/posts";
 import { useParams } from "next/navigation";
 import { CommentsCard } from "@/app/Components/commentslayout/card";
 import { getComments } from "@/app/data/comments";
+import Navbar from "@/app/Components/navbar";
 
 export default function Post() {
   const [post, setPost] = useState([])
@@ -26,6 +27,7 @@ console.log(comments)
   return (
     <>
             <div >
+              <Navbar/>
               <PostCard post = {post}/>
             </div>
             <div>
