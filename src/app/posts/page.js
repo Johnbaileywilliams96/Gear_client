@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { getPosts } from "../data/posts";
-import { PostCard } from "../Components/postlayout/card";
 import Navbar from "../Components/navbar";
+import Link from "next/link";
 
 
 export default function Posts() {
@@ -22,7 +22,17 @@ export default function Posts() {
           {posts.length > 0 ? (
             posts.map((post, index) => (
               <div key={index} className="flex justify-center">
-                <PostCard post={post}/>
+                <div className="border border-cyan-500 rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow duration-300 max-w-md">
+                  <Link href={`/posts/${post.id}`}>
+                    <h1 className="text-xl font-bold text-cyan-700 mb-2 hover:underline">{post.title}</h1>
+                  </Link>
+                  <div>
+                      {post.image_path}
+                  </div>
+                  <div className="bg-cyan-50 p-3 rounded">
+                      <p className="text-gray-700">{post.description}</p>
+                  </div>
+                </div>
               </div>
             ))
           ) : (

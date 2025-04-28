@@ -48,7 +48,7 @@ export default function Navbar() {
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
         <Link href="/" className="flex items-center">
-          <img src="/images/logo.png" alt="Logo" className="w-10 h-10" />
+          <img src="/images/logo.png" alt="Logo" className="w-auto h-auto" />
         </Link>
 
         {/* Mobile menu button */}
