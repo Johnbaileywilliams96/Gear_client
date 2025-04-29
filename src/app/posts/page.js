@@ -25,6 +25,11 @@ export default function Posts() {
                 <div className="border border-cyan-500 rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow duration-300 max-w-md">
                   <Link href={`/posts/${post.id}`}>
                     <h1 className="text-xl font-bold text-cyan-700 mb-2 hover:underline">{post.title}</h1>
+                    {post.image_path && (
+                  <div className="mb-4">
+                    <img src={post.image_path} alt={post.title} className="max-w-full h-auto rounded" />
+                  </div>
+                )}
                   </Link>
                   <div>
                       {post.image_path}

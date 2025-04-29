@@ -13,9 +13,6 @@ export default function CreatePost() {
   const [tags, setTags] = useState([])
   const [selectedTags, setSelectedTags] = useState([])
   
-//   useEffect(() => {
-//     addPost().then(data => setPosts(data))
-//   }, [])
 
   useEffect(() => {
     getTags().then(data => setTags(data))
@@ -33,37 +30,41 @@ export default function CreatePost() {
     }
 }, []);
 
-  const handlePostCreation = (e) => {
+const handlePostCreation = (e) => {
     e.preventDefault();
     
-    // Create post object from form data matching your backend's expected format
+    // Create post object from form data
     const postData = {
-        title: title,
-        description: description,
-        imag_path: image_path // Notice the spelling matches your backend (imag_path, not image_path)
+      title: title,
+      description: description,
+      tags: selectedTags  // Make sure this is an array of tag IDs
     };
     
+    // Add image if one is selected
+    if (image_path) {
+      postData.image_path = image_path;
+    }
+    
+    console.log("Sending post data:", postData); // For debugging
+    
+    // Send the post with tags included
     addPost(postData)
-        .then(newPost => {
-            console.log('Post created successfully:', newPost);
-            
-            // If you need to handle tags separately, you can make additional API calls here
-            // For example, if you have a separate endpoint to connect posts and tags:
-            // addPostTags(newPost.id, selectedTags)
-            
-            // Reset form after successful creation
-            setTitle('');
-            setDescription('');
-            setImagePath(null);
-            setSelectedTags([]);
-            
-            alert('Post created successfully!');
-        })
-        .catch(error => {
-            console.error('Failed to create post:', error);
-            alert('Failed to create post. Please try again.');
-        });
-};
+      .then(newPost => {
+        console.log('Post created successfully:', newPost);
+        
+        // Reset form
+        setTitle('');
+        setDescription('');
+        setImagePath(null);
+        setSelectedTags([]);
+        
+        alert('Post created successfully!');
+      })
+      .catch(error => {
+        console.error('Failed to create post:', error);
+        alert('Failed to create post. Please try again.');
+      });
+  };
 
   const getBase64 = (file, callback) => {
     const reader = new FileReader();
@@ -81,12 +82,16 @@ export default function CreatePost() {
   }
 
   const handleTagChange = (tagId) => {
+    console.log("Tag clicked:", tagId);
+    console.log("Current selectedTags:", selectedTags);
+    
     setSelectedTags(prevSelectedTags => {
-      if (prevSelectedTags.includes(tagId)) {
-        return prevSelectedTags.filter(id => id !== tagId);
-      } else {
-        return [...prevSelectedTags, tagId];
-      }
+      const newTags = prevSelectedTags.includes(tagId) 
+        ? prevSelectedTags.filter(id => id !== tagId)
+        : [...prevSelectedTags, tagId];
+      
+      console.log("New selectedTags will be:", newTags);
+      return newTags;
     });
   }
 
@@ -153,10 +158,10 @@ export default function CreatePost() {
                         type="checkbox" 
                         id={`tag-${tag.id}`}
                         value={tag.id}
-                        checked={selectedTags.includes(tag.id)}
+                        checked={selectedTags.some(selectedId => selectedId === tag.id)}
                         onChange={() => handleTagChange(tag.id)}
                         className="mr-2"
-                      />
+                        />
                       <label htmlFor={`tag-${tag.id}`} className="text-gray-700">
                         {tag.name}
                       </label>
