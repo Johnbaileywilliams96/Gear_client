@@ -11,7 +11,10 @@ export default function Post() {
   const {id} = params
   
   useEffect(() => {
-    getPostsById(id).then(data => setPost(data))
+    getPostsById(id).then(data => {
+      console.log("Post data:", data); // For debugging
+      setPost(data);
+    })
   }, [id])
 
   return (
@@ -28,8 +31,26 @@ export default function Post() {
                     <img src={post.image_path} alt={post.title} className="max-w-full h-auto rounded" />
                   </div>
                 )}
-                <div className="bg-cyan-50 p-3 rounded">
+                <div className="bg-cyan-50 p-3 rounded mb-4">
                   <p className="text-gray-700">{post.description}</p>
+                </div>
+                
+                <div>
+                  <h2 className="text-lg font-semibold mb-2">Tags</h2>
+                  {post.post_tags && post.post_tags.length > 0 ? (
+                    <div className="flex flex-wrap gap-2">
+                      {post.post_tags.map((postTag, index) => (
+                        <span 
+                          key={index}
+                          className="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded"
+                        >
+                          {postTag.tag.name}
+                        </span>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-gray-500">No tags for this post</p>
+                  )}
                 </div>
               </div>
               
@@ -45,7 +66,9 @@ export default function Post() {
                             {new Date(comment.created_at).toLocaleString()}
                           </div>
                         </div>
+                        <div className="text-black">
                         <p>{comment.content}</p>
+                        </div>
                       </div>
                     ))}
                   </div>

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { getProfiles } from "../data/profiles";
 import Navbar from "../Components/navbar";
+import Link from "next/link";
 
 export default function Profile() {
   const [profiles, setProfiles] = useState([])
@@ -23,6 +24,11 @@ export default function Profile() {
           {profiles.length > 0 ? (
             profiles.map((profile, index) => (
               <div key={index} className="bg-white rounded-lg shadow-md p-6">
+                <div>
+                    <Link href={`/profiles/${profile.user.id}`}>
+                    <p className="text-black">{profile.user.username}</p>
+                    </Link>
+                </div>
                 <h2 className="text-xl font-semibold mb-4">Bio</h2>
                 <p className="text-gray-700">{profile.bio}</p>
               </div>
