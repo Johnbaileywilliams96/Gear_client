@@ -3,41 +3,36 @@
 import { useState, useEffect } from "react";
 import { addPost } from "../data/posts";
 import Navbar from "../Components/navbar";
-import { getTags } from "../data/tags";
+import { getTags } from "../data/tags"; // Import getTags instead of getPostTags
 
 export default function CreatePost() {
-//   const [posts, setPosts] = useState([])
-  const [title, setTitle] = useState("")
-  const [description, setDescription] = useState('')
-  const [image_path, setImagePath] = useState(null)
-  const [tags, setTags] = useState([])
-  const [selectedTags, setSelectedTags] = useState([])
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState('');
+  const [image_path, setImagePath] = useState(null);
+  const [tags, setTags] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   
-
   useEffect(() => {
-    getTags().then(data => setTags(data))
-  }, [])
+    // Use getTags() instead of getPostTags()
+    getTags().then(data => {
+      console.log("Tags received:", data);
+      setTags(data);
+    }).catch(err => {
+      console.error("Error loading tags:", err);
+    });
+  }, []);
 
-  // Add this to your component
-  useEffect(() => {
-    const authInfo = localStorage.getItem('gear_token');
-    console.log('Stored auth info:', authInfo);
-    try {
-        const parsed = JSON.parse(authInfo);
-        console.log('Parsed auth info:', parsed);
-    } catch (e) {
-        console.error('Error parsing auth info:', e);
-    }
-}, []);
-
-const handlePostCreation = (e) => {
+  const handlePostCreation = (e) => {
     e.preventDefault();
+    setIsLoading(true);
     
     // Create post object from form data
     const postData = {
       title: title,
       description: description,
-      tags: selectedTags  // Make sure this is an array of tag IDs
+      tags: selectedTags
     };
     
     // Add image if one is selected
@@ -45,9 +40,8 @@ const handlePostCreation = (e) => {
       postData.image_path = image_path;
     }
     
-    console.log("Sending post data:", postData); // For debugging
+    console.log("Sending post data:", postData);
     
-    // Send the post with tags included
     addPost(postData)
       .then(newPost => {
         console.log('Post created successfully:', newPost);
@@ -57,12 +51,14 @@ const handlePostCreation = (e) => {
         setDescription('');
         setImagePath(null);
         setSelectedTags([]);
+        setIsLoading(false);
         
         alert('Post created successfully!');
       })
       .catch(error => {
         console.error('Failed to create post:', error);
-        alert('Failed to create post. Please try again.');
+        setIsLoading(false);
+        setError('Failed to create post. Please try again.');
       });
   };
 
@@ -70,20 +66,18 @@ const handlePostCreation = (e) => {
     const reader = new FileReader();
     reader.addEventListener('load', () => callback(reader.result));
     reader.readAsDataURL(file);
-  }
+  };
 
   const createProductImageString = (event) => {
     if (event.target.files && event.target.files[0]) {
       getBase64(event.target.files[0], (base64ImageString) => {
-        // Pass the image data up to the parent component
         setImagePath(base64ImageString);
       });
     }
-  }
+  };
 
   const handleTagChange = (tagId) => {
     console.log("Tag clicked:", tagId);
-    console.log("Current selectedTags:", selectedTags);
     
     setSelectedTags(prevSelectedTags => {
       const newTags = prevSelectedTags.includes(tagId) 
@@ -93,7 +87,7 @@ const handlePostCreation = (e) => {
       console.log("New selectedTags will be:", newTags);
       return newTags;
     });
-  }
+  };
 
   return (
     <>
@@ -101,6 +95,13 @@ const handlePostCreation = (e) => {
       <div className="flex justify-center items-center min-h-screen pt-16 pb-8 px-4">
         <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
           <h2 className="text-2xl font-bold mb-6 text-center">Create New Post</h2>
+          
+          {error && (
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+              {error}
+            </div>
+          )}
+          
           <form onSubmit={handlePostCreation}>
             <fieldset className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2"> 
@@ -117,6 +118,7 @@ const handlePostCreation = (e) => {
                 autoFocus 
               />
             </fieldset>
+            
             <fieldset className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2"> 
                 Description 
@@ -130,6 +132,7 @@ const handlePostCreation = (e) => {
                 required 
               />
             </fieldset>
+            
             <fieldset className="mb-6">
               <label className="block text-gray-700 text-sm font-bold mb-2">
                 Product Image
@@ -146,6 +149,7 @@ const handlePostCreation = (e) => {
                 </div>
               )}
             </fieldset>
+            
             <fieldset className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2"> 
                 Tags 
@@ -158,10 +162,9 @@ const handlePostCreation = (e) => {
                         type="checkbox" 
                         id={`tag-${tag.id}`}
                         value={tag.id}
-                        checked={selectedTags.some(selectedId => selectedId === tag.id)}
                         onChange={() => handleTagChange(tag.id)}
                         className="mr-2"
-                        />
+                      />
                       <label htmlFor={`tag-${tag.id}`} className="text-gray-700">
                         {tag.name}
                       </label>
@@ -172,17 +175,22 @@ const handlePostCreation = (e) => {
                 )}
               </div>
             </fieldset>
+            
             <div className="flex items-center justify-center">
               <button
                 type="submit"
-                className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-colors"
+                disabled={isLoading}
+                className={`
+                  ${isLoading ? 'bg-yellow-300' : 'bg-yellow-400 hover:bg-yellow-500'} 
+                  text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-colors
+                `}
               >
-                Create Post
+                {isLoading ? 'Creating...' : 'Create Post'}
               </button>
             </div>
           </form>
         </div>
       </div>
     </>
-  )
+  );
 }

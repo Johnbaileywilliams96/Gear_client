@@ -31,9 +31,9 @@ export default function Posts() {
                   </div>
                 )}
                   </Link>
-                  <div>
+                  {/* <div>
                       {post.image_path}
-                  </div>
+                  </div> */}
                   <div className="bg-cyan-50 p-3 rounded">
                       <p className="text-gray-700">{post.description}</p>
                   </div>

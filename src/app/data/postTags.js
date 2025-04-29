@@ -18,3 +18,10 @@ export function addPostTags(postId, tagIds) {
         throw error;
     });
 }
+
+export function getPostTags() {
+    return fetch('http://localhost:8000/posttags')
+            .then(response => response.json())
+            .catch(error => console.error('Error fetching posts:', error));
+}
+
