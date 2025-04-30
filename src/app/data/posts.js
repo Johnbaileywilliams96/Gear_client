@@ -79,17 +79,16 @@ export function deletePost(id) {
     }
 }
 
-export function editPost(postData) {
-    // Get the auth info and parse it from JSON
+export function editPost(id, postData) {
     const authInfo = JSON.parse(localStorage.getItem('gear_token'));
     
-    // Check if authInfo exists and contains a token
     if (!authInfo || !authInfo.token) {
         console.error('No authentication token found');
         return Promise.reject('Not authenticated');
     }
     
-    return fetch('http://localhost:8000/posts', {
+    // This URL needs to include the ID
+    return fetch(`http://localhost:8000/posts/${id}`, {
         method: 'PUT',
         headers: {
             'Authorization': `Token ${authInfo.token}`,
@@ -107,7 +106,7 @@ export function editPost(postData) {
         return response.json();
     })
     .catch(error => {
-        console.error('Error adding post:', error);
+        console.error('Error updating post:', error);
         throw error;
     });
 }

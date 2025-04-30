@@ -22,6 +22,7 @@ export default function Post() {
 
   const handleDeletePost = () => {
     deletePost(id)
+    router.push(`/posts`); // Navigate back to the post
   }
 
 
