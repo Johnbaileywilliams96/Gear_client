@@ -15,10 +15,19 @@ export default function CreatePost() {
   const [error, setError] = useState(null);
   
   useEffect(() => {
-    // Use getTags() instead of getPostTags()
     getTags().then(data => {
       console.log("Tags received:", data);
-      setTags(data);
+      // Transform the data to include the ID at the top level
+      const processedTags = data.map(tag => {
+        // Get the ID from the first post_tag if available, otherwise generate a temporary ID
+        const id = tag.post_tags && tag.post_tags.length > 0 && tag.post_tags[0].tag ? 
+                   tag.post_tags[0].tag.id : tag.name;
+        return {
+          id: id,
+          name: tag.name
+        };
+      });
+      setTags(processedTags);
     }).catch(err => {
       console.error("Error loading tags:", err);
     });
