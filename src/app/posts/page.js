@@ -22,6 +22,7 @@ export default function Posts() {
           {posts.length > 0 ? (
             posts.map((post, index) => (
               <div key={index} className="flex justify-center">
+                
                 <div className="border border-cyan-500 rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow duration-300 max-w-md">
                   <Link href={`/posts/${post.id}`}>
                     <h1 className="text-xl font-bold text-cyan-700 mb-2 hover:underline">{post.title}</h1>
@@ -31,14 +32,28 @@ export default function Posts() {
                   </div>
                 )}
                   </Link>
-                  {/* <div>
-                      {post.image_path}
-                  </div> */}
                   <div className="bg-cyan-50 p-3 rounded">
                       <p className="text-gray-700">{post.description}</p>
                   </div>
+                  <div>
+                  <h2 className="text-lg font-semibold mb-2">Tags</h2>
+                  {post.post_tags && post.post_tags.length > 0 ? (
+                    <div className="flex flex-wrap gap-2">
+                      {post.post_tags.map((postTag, index) => (
+                        <span 
+                          key={index}
+                          className="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded"
+                        >
+                          {postTag.tag.name}
+                        </span>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-gray-500">No tags for this post</p>
+                  )}
                 </div>
               </div>
+                </div>
               
             ))
           ) : (

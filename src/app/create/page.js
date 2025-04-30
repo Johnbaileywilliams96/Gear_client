@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { addPost } from "../data/posts";
 import Navbar from "../Components/navbar";
 import { getTags } from "../data/tags"; 
+import { useRouter } from 'next/navigation';
 
 export default function CreatePost() {
   const [title, setTitle] = useState("");
@@ -13,6 +14,7 @@ export default function CreatePost() {
   const [selectedTags, setSelectedTags] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const router = useRouter(); // Add router for navigation
   
   useEffect(() => {
     getTags().then(data => {
@@ -62,6 +64,7 @@ export default function CreatePost() {
         setSelectedTags([]);
         setIsLoading(false);
         
+        router.push(`/posts`); // Navigate back to the post
         alert('Post created successfully!');
       })
       .catch(error => {

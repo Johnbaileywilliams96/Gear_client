@@ -95,7 +95,7 @@ export default function Post() {
         </div>
         <button 
           type="submit"
-          onClick={() => handleAddComment()}
+          onClick={() => router.push(`/posts/${id}/comment`)}
           className="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-2 px-4 rounded-md shadow-sm transition-colors duration-300 flex items-center justify-center space-x-1"
         >
           <span>Add Comment</span>
