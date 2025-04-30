@@ -4,10 +4,13 @@ import { useState, useEffect } from "react";
 import { deletePost, getPostsById } from "@/app/data/posts";
 import { useParams } from "next/navigation";
 import Navbar from "@/app/Components/navbar";
+import { useRouter } from "next/navigation";
+
 
 export default function Post() {
   const [post, setPost] = useState(null)
   const params = useParams()
+  const router = useRouter()
   const {id} = params
   
   useEffect(() => {
@@ -20,6 +23,8 @@ export default function Post() {
   const handleDeletePost = () => {
     deletePost(id)
   }
+
+
 
   return (
     <>
@@ -97,6 +102,18 @@ export default function Post() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
           </svg>
         </button>
+        
+        <button 
+          type="button" // Change from "submit" to "button"
+          onClick={() => router.push(`/posts/${id}/edit`)} // Make sure this path matches your file structure
+          className="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-2 px-4 rounded-md shadow-sm transition-colors duration-300 flex items-center justify-center space-x-1 mt-4" // Added mt-4 for spacing
+        >
+          <span>Edit Post</span>
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+          </svg>
+        </button>
+
         <button 
           type="submit"
           onClick={() => handleDeletePost(id)}
