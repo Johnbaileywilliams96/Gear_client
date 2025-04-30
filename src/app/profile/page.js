@@ -25,7 +25,7 @@ export default function Profile() {
             profiles.map((profile, index) => (
               <div key={index} className="bg-white rounded-lg shadow-md p-6">
                 <div>
-                    <Link href={`/profiles/${profile.user.id}`}>
+                    <Link href={`/profile/${profile.id}`}>
                     <p className="text-black">{profile.user.username}</p>
                     </Link>
                 </div>
