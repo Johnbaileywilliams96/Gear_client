@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { addPost } from "../data/posts";
 import Navbar from "../Components/navbar";
-import { getTags } from "../data/tags"; // Import getTags instead of getPostTags
+import { getTags } from "../data/tags"; 
 
 export default function CreatePost() {
   const [title, setTitle] = useState("");
