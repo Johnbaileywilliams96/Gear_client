@@ -17,6 +17,7 @@ export default function Post() {
     getPostsById(id).then(data => {
       console.log("Post data:", data); // For debugging
       setPost(data);
+      console.log(post)
     })
   }, [id])
 
@@ -24,7 +25,6 @@ export default function Post() {
     deletePost(id)
     router.push(`/posts`); // Navigate back to the post
   }
-
 
 
   return (
@@ -103,7 +103,10 @@ export default function Post() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
           </svg>
         </button>
-        
+
+
+        {post && post?.is_Owner ?
+        <div>
         <button 
           type="button" // Change from "submit" to "button"
           onClick={() => router.push(`/posts/${id}/edit`)} // Make sure this path matches your file structure
@@ -126,6 +129,10 @@ export default function Post() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
           </svg>
         </button>
+        </div>
+        
+        : ''}
+      
       </div>
     </>
   )
