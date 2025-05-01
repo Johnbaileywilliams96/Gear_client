@@ -71,7 +71,7 @@ export default function Post() {
                     {post.post_comments.map((comment, index) => (
                       <div key={index} className="border rounded-lg p-4 bg-gray-50">
                         <div className="flex items-center mb-2">
-                          <div className="font-medium">{comment.user?.username || 'Anonymous'}</div>
+                          <div className="font-medium text-black">{comment.user?.username || 'Anonymous'}</div>
                           <div className="text-xs text-gray-500 ml-2">
                             {new Date(comment.created_at).toLocaleString()}
                           </div>

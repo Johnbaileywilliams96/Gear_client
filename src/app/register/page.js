@@ -46,7 +46,7 @@ export default function Register() {
 
             <section>
                 <form className="form--login" onSubmit={handleRegister}>
-                    <h1 className="text-4xl mt-7 mb-3">Rock of Ages</h1>
+                    <h1 className="text-4xl mt-7 mb-3">Gear Spot</h1>
                     <h2 className="text-xl mb-10">Register new account</h2>
                     <fieldset className="mb-4">
                         <label htmlFor="firstName"> First name </label>

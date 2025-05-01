@@ -10,7 +10,7 @@ export default function Posts() {
   const [posts, setPosts] = useState([])
   
   useEffect(() => {
-       getPosts().then(data => setPosts(data))
+       getPosts().then(data => setPosts(data.reverse()))
   }, [])
 
   return (
@@ -20,7 +20,7 @@ export default function Posts() {
         <h1 className="text-3xl font-bold text-center mb-8">Posts</h1>
         <div className="grid gap-6">
           {posts.length > 0 ? (
-            posts.map((post, index) => (
+            posts.reverse().map((post, index) => (
               <div key={index} className="flex justify-center">
                 
                 <div className="border border-cyan-500 rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow duration-300 max-w-md">
@@ -57,7 +57,7 @@ export default function Posts() {
               
             ))
           ) : (
-            <p className="text-center text-gray-500">No posts found.</p>
+            <p className="text-center text-gray-500">Loading...</p>
           )}
           
         </div>

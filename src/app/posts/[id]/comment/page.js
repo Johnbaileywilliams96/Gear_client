@@ -78,7 +78,7 @@ export default function CreateComment() {
                   text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-colors
                 `}
               >
-                {isLoading ? 'Creating...' : 'Create Post'}
+                {isLoading ? 'Creating...' : 'Add'}
               </button>
             </div>
 
