@@ -3,12 +3,14 @@
 import { useState, useEffect } from "react";
 import { getCurrentUser, getProfileById } from "@/app/data/profiles";
 import Navbar from "@/app/Components/navbar";
+import { useRouter } from "next/navigation";
 
 
 export default function Profile() {
   const [profile, setProfile] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const router = useRouter()
   
   
   useEffect(() => {
@@ -48,13 +50,13 @@ export default function Profile() {
         {profile && (
           <div className="bg-white shadow-md rounded-lg p-6">
             <div className="flex items-center mb-4">
-              {/* {profile.profile_picture && (
+              {profile.profile_picture && (
                 <img 
                   src={profile.profile_picture} 
                   alt={`${profile.user?.username || 'User'}'s profile`}
                   className="w-24 h-24 rounded-full mr-4 object-cover"
                 />
-              )} */}
+              )}
               <div>
                 <h3 className="text-xl font-semibold">
                   {profile.user?.username || 'User'}
@@ -65,14 +67,20 @@ export default function Profile() {
               </div>
             </div>
             
-            {profile.bio && (
-              <div className="mb-4">
-                <h4 className="text-lg font-medium mb-2">Bio</h4>
-                <p className="text-gray-700">{profile.bio}</p>
-              </div>
-            )}
-            
-            {/* Add more profile details as needed */}
+            <h3>
+            {profile.bio}   
+            </h3>
+            <button 
+              type="button"
+              onClick={() => router.push(profile?.id ? `/edit-profile/${profile.id}` : '/edit-profile')} // Navigate to the edit profile page
+              className="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-2 px-4 rounded-md shadow-sm transition-colors duration-300 flex items-center justify-center space-x-1 mt-4"
+            >
+              <span>Edit Profile</span> {/* Changed from "Edit Post" to "Edit Profile" */}
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              </svg>
+            </button>
+           
           </div>
         )}
       </div>

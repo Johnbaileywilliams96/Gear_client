@@ -65,3 +65,37 @@ export const addProfile = async (profileData, token) => {
                 throw error;
             });
 }
+
+// Example function to update a user's profile
+export const updateProfile = async (profileData) => {
+    try {
+      const authInfoString = localStorage.getItem('gear_token');
+      if (!authInfoString) {
+        throw new Error('No authentication token found');
+      }
+      
+      const authInfo = JSON.parse(authInfoString);
+      const token = authInfo.token;
+      
+      const response = await fetch('http://localhost:8000/profiles/update_current_user_profile/', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(profileData)
+      });
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Profile update failed with status:", response.status);
+        console.error("Error details:", errorText);
+        throw new Error(`Error updating profile: ${response.statusText}`);
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error("Profile update error:", error);
+      throw error;
+    }
+  };
