@@ -4,6 +4,7 @@ import React, { useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 
+
 export default function Register() {
     const [email, setEmail] = useState("Email")
     const [password, setPassword] = useState("password")
@@ -36,6 +37,9 @@ export default function Register() {
                 }
             })
     }
+
+    
+
 
     return (
         <main className="container--login">
