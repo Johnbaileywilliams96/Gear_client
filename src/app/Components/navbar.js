@@ -9,7 +9,7 @@ export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const router = useRouter()
 
-  // Check login status when component mounts and set up event listener
+
   useEffect(() => {
     checkLoginStatus()
     window.addEventListener('storage', handleStorageChange)
@@ -75,7 +75,7 @@ export default function Navbar() {
                 Home
               </Link>
               <Link href="/create" className="text-sm text-black hover:text-gray-700">
-                create
+                Create
               </Link>
               <button 
                 onClick={handleLogout}
@@ -111,7 +111,7 @@ export default function Navbar() {
                   Home
                 </Link>
                 <Link href="/create" className="text-sm text-black hover:text-gray-700">
-                create
+                Create
               </Link>
                 <button 
                   onClick={handleLogout}
