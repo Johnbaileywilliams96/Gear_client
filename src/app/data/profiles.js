@@ -77,14 +77,16 @@ export const updateProfile = async (profileData) => {
       const authInfo = JSON.parse(authInfoString);
       const token = authInfo.token;
       
-      const response = await fetch('http://localhost:8000/profiles/update_current_user_profile/', {
+      const response = await fetch('http://localhost:8000/profiles/update_current_user_profile', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Token ${token}`
         },
         body: JSON.stringify(profileData)
       });
+
+      console.log({"profileData updateProfile": profileData})
       
       if (!response.ok) {
         const errorText = await response.text();

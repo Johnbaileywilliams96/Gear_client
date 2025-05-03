@@ -50,9 +50,9 @@ export default function Profile() {
         {profile && (
           <div className="bg-white shadow-md rounded-lg p-6">
             <div className="flex items-center mb-4">
-              {profile.profile_picture && (
+              {profile.profile_image && (
                 <img 
-                  src={profile.profile_picture} 
+                  src={profile.profile_image} 
                   alt={`${profile.user?.username || 'User'}'s profile`}
                   className="w-24 h-24 rounded-full mr-4 object-cover"
                 />
@@ -66,13 +66,13 @@ export default function Profile() {
                 )}
               </div>
             </div>
-            
+            <h2>BIO</h2>
             <h3>
             {profile.bio}   
             </h3>
             <button 
               type="button"
-              onClick={() => router.push(profile?.id ? `/edit-profile/${profile.id}` : '/edit-profile')} // Navigate to the edit profile page
+              onClick={() => router.push(profile?.id ? `/profile/${profile.id}` : '/edit-profile')} // Navigate to the edit profile page
               className="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-2 px-4 rounded-md shadow-sm transition-colors duration-300 flex items-center justify-center space-x-1 mt-4"
             >
               <span>Edit Profile</span> {/* Changed from "Edit Post" to "Edit Profile" */}
