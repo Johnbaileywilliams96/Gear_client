@@ -111,6 +111,34 @@ export default function Profile() {
                     )}
                 </div>
                 )}
+
+                {profile && profile.user_likes && (
+                <div className="mt-8">
+                    <h2 className="text-2xl font-bold mb-4">Liked Post</h2>
+                    
+                    {profile.user_likes.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {profile.user_likes.map(i => (
+                        <div 
+                            key={i.post.id} 
+                            className="bg-white rounded-lg shadow overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
+                            onClick={() => router.push(`/posts/${i.post.id}`)}
+                        >
+                            {i.post.image_path && (
+                            <img src={i.post.image_path} alt={i.post.title} className="h-40 w-full object-cover" />
+                            )}
+                            <div className="p-4">
+                            <h3 className="font-bold">{i.post.title}</h3>
+                            <h3 className="font-bold">{i.post.description}</h3>
+                            </div>
+                        </div>
+                        ))}
+                    </div>
+                    ) : (
+                    <p className="text-gray-500">No posts yet.</p>
+                    )}
+                </div>
+                )}
            
           </div>
         )}
