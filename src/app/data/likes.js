@@ -40,3 +40,38 @@ export function addLike(id) {
         throw error;
     });
 }
+
+// data/likes.js
+
+export const toggleLike = async (postId) => {
+    try {
+      const authInfoString = localStorage.getItem('gear_token');
+      if (!authInfoString) {
+        throw new Error('No authentication token found');
+      }
+      
+      const authInfo = JSON.parse(authInfoString);
+      const token = authInfo.token;
+      
+      const response = await fetch('http://localhost:8000/likes/toggle', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Token ${token}`
+        },
+        body: JSON.stringify({ post: postId })
+      });
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Like toggle failed with status:", response.status);
+        console.error("Error details:", errorText);
+        throw new Error(`Error toggling like: ${response.statusText}`);
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error("Like toggle error:", error);
+      throw error;
+    }
+  };

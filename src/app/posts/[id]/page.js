@@ -5,11 +5,14 @@ import { deletePost, getPostsById } from "@/app/data/posts";
 import { useParams } from "next/navigation";
 import Navbar from "@/app/Components/navbar";
 import { useRouter } from "next/navigation";
-import { addLike } from "@/app/data/likes";
+import { addLike, toggleLike } from "@/app/data/likes";
 
 
 export default function Post() {
   const [post, setPost] = useState(null)
+  const [likesCount, setLikesCount] = useState(0);
+  const [isLiked, setIsLiked] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const params = useParams()
   const router = useRouter()
   const {id} = params
@@ -19,16 +22,50 @@ export default function Post() {
       console.log("Post data:", data); // For debugging
       setPost(data);
       console.log(post)
+
+      const initialLikesCount = data.post_likes ? data.post_likes.length : 0;
+      setLikesCount(initialLikesCount);
+
+      const currentUserId = getCurrentUserId(); // Implement this function to get the current user's ID
+      const userHasLiked = data.post_likes && data.post_likes.some(like => 
+        like.user && like.user.id === currentUserId
+      );
+      setIsLiked(userHasLiked);
+      
+      setIsLoading(false);
     })
   }, [id])
+
+  const getCurrentUserId = () => {
+    try {
+      const authInfoString = localStorage.getItem('gear_token');
+      if (!authInfoString) return null;
+      
+      const authInfo = JSON.parse(authInfoString);
+      return authInfo.user_id; // Assuming your token contains the user_id
+    } catch (error) {
+      console.error("Error getting current user ID:", error);
+      return null;
+    }
+  };
+
+  const handleToggleLike = async () => {
+    try {
+      const result = await toggleLike(id);
+      
+      // Update the likes count and status based on the response
+      setLikesCount(result.likes_count);
+      setIsLiked(result.status === "liked");
+      
+    } catch (error) {
+      console.error("Error toggling like:", error);
+      // Handle error (maybe show a toast or notification)
+    }
+  };
 
   const handleDeletePost = () => {
     deletePost(id)
     router.push(`/posts`); // Navigate back to the post
-  }
-
-  const handleLike = () => {
-    addLike(id)
   }
 
 
@@ -113,6 +150,22 @@ export default function Post() {
           </svg>
         </button>
 
+        <div className="flex items-center mb-6">
+              <button 
+                onClick={handleToggleLike}
+                className={`flex items-center gap-2 px-4 py-2 rounded-full transition-colors ${
+                  isLiked 
+                    ? 'bg-red-100 text-red-600 hover:bg-red-200' 
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 ${isLiked ? 'text-red-600' : 'text-gray-600'}`} viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+                </svg>
+                <span>{isLiked ? 'Liked' : 'Like'} • {likesCount}</span>
+              </button>
+            </div>
+
 
         {post && post?.is_Owner ?
         <div>
@@ -139,17 +192,6 @@ export default function Post() {
           </svg>
         </button>
 
-        <button 
-          type="submit"
-          onClick={() => handleLike(id)}
-          className="bg-red-400 hover:bg-red-500 text-black font-semibold py-2 px-4 rounded-md shadow-sm transition-colors duration-300 flex items-center justify-center space-x-1"
-        >
-          <span>Like</span>
-          
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-          </svg>
-        </button>
         </div>
         
         : ''}
