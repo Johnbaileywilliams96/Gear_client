@@ -8,7 +8,7 @@ export default function Home() {
     <>
       <Navbar/>
       <div className="flex flex-col items-center justify-center min-h-screen pt-16 pb-8 px-4 text-center">
-        <h1 className="text-3xl font-bold mb-2">welcome</h1>
+        <h1 className="text-3xl font-bold mb-2">Welcome to</h1>
         <p className="text-xl mb-6">GearSpot</p>
         <Link href={`/posts`}>
           <button

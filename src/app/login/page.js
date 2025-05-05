@@ -4,12 +4,10 @@ import React, { useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 
-// Change from named export to default export
 export default function Login() {
     const [email, setEmail] = useState("steve@brownlee.com")
     const [password, setPassword] = useState("brownlee")
     const existDialog = useRef()
-    // Use Next.js router instead of React Router's navigate
     const router = useRouter()
 
     const handleLogin = (e) => {
@@ -25,7 +23,6 @@ export default function Login() {
             .then(authInfo => {
                 if (authInfo.valid) {
                     localStorage.setItem("gear_token", JSON.stringify(authInfo))
-                    // Change navigate to router.push
                     router.push("/")
                 } else {
                     existDialog.current.showModal()
@@ -34,46 +31,67 @@ export default function Login() {
     }
 
     return (
-        <main className="container--login">
-            <dialog className="dialog dialog--auth" ref={existDialog}>
-                <div>User does not exist</div>
-                <button className="button--close" onClick={e => existDialog.current.close()}>Close</button>
+        <main className="flex min-h-screen flex-col items-center justify-center bg-black px-4">
+            <dialog className="dialog dialog--auth rounded-md shadow-md p-6 bg-gray-800 text-white" ref={existDialog}>
+                <div className="mb-4 font-medium text-red-400">User does not exist</div>
+                <button 
+                    className="w-full rounded-md bg-blue-600 p-2 text-white hover:bg-blue-500" 
+                    onClick={e => existDialog.current.close()}>
+                    Close
+                </button>
             </dialog>
 
-            <section>
-                <form className="form--login" onSubmit={handleLogin}>
-                    <h1 className="text-4xl mt-7 mb-3">Gear Spot</h1>
-                    <h2 className="text-xl mb-10">Please sign in</h2>
+            <div className="w-full max-w-md rounded-lg bg-gray-800 p-8 shadow-lg border border-gray-700">
+                <form className="flex flex-col" onSubmit={handleLogin}>
+                    <h1 className="text-center text-4xl font-bold text-blue-400 mb-2">GearSpot</h1>
+                    <h2 className="text-center text-xl mb-8 text-gray-300">Please sign in</h2>
+                    
                     <fieldset className="mb-4">
-                        <label htmlFor="inputEmail"> Email address </label>
-                        <input type="email" id="inputEmail"
+                        <label className="block text-sm font-medium text-gray-300 mb-1" htmlFor="inputEmail">
+                            Email address
+                        </label>
+                        <input 
+                            type="email" 
+                            id="inputEmail"
                             value={email}
                             onChange={evt => setEmail(evt.target.value)}
-                            className="form-control"
+                            className="w-full rounded-md border border-gray-600 bg-gray-700 px-3 py-2 text-white focus:border-blue-400 focus:outline-none"
                             placeholder="Email address"
-                            required autoFocus />
+                            required 
+                            autoFocus 
+                        />
                     </fieldset>
-                    <fieldset className="mb-4">
-                        <label htmlFor="inputPassword"> Password </label>
-                        <input type="password" id="inputPassword"
+                    
+                    <fieldset className="mb-6">
+                        <label className="block text-sm font-medium text-gray-300 mb-1" htmlFor="inputPassword">
+                            Password
+                        </label>
+                        <input 
+                            type="password" 
+                            id="inputPassword"
                             value={password}
                             onChange={evt => setPassword(evt.target.value)}
-                            className="form-control"
+                            className="w-full rounded-md border border-gray-600 bg-gray-700 px-3 py-2 text-white focus:border-blue-400 focus:outline-none"
                             placeholder="Password"
                         />
                     </fieldset>
+                    
                     <fieldset>
-                        <button type="submit" className="button p-3 rounded-md bg-blue-800 text-blue-100">
+                        <button 
+                            type="submit" 
+                            className="w-full rounded-md bg-blue-600 py-2 px-4 font-medium text-white hover:bg-blue-500 transition-colors">
                             Sign in
                         </button>
                     </fieldset>
                 </form>
-            </section>
-            <div className="loginLinks">
-                <section className="link--register">
-                    {/* Change React Router Link to Next.js Link */}
-                    <Link className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600" href="/register">Not a member yet?</Link>
-                </section>
+                
+                <div className="mt-6 text-center">
+                    <Link 
+                        className="text-blue-400 hover:text-blue-300 hover:underline" 
+                        href="/register">
+                        Not a member yet?
+                    </Link>
+                </div>
             </div>
         </main>
     )

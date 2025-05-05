@@ -8,7 +8,8 @@ export default function GearSpot() {
     <>
       <Navbar/>
       <div className="flex flex-col items-center justify-center min-h-screen pt-16 pb-8 px-4 text-center">
-        <h1 className="text-3xl font-bold mb-6">News</h1>
+        <h1 className="text-3xl font-bold mb-6">Welcome To GearSpot</h1>
+
         <Link href={`/posts`}>
           <button
             className="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-6 rounded-md transition-colors"
@@ -16,6 +17,7 @@ export default function GearSpot() {
             Gear
           </button>
         </Link>
+
       </div>
     </>
   )
