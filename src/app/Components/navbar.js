@@ -48,7 +48,13 @@ export default function Navbar() {
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
         <Link href="/" className="flex items-center">
-          <img src="/images/logo.png" alt="Logo" className="w-auto h-auto" />
+            <div className="h-10 w-10 rounded-full overflow-hidden flex items-center justify-center bg-white">
+                <img 
+                    src="/images/gear_spot.png" 
+                    alt="GearSpot Logo" 
+                    className="h-full w-auto object-contain" 
+                />
+            </div>
         </Link>
 
         {/* Mobile menu button */}

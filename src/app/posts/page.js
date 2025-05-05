@@ -6,14 +6,19 @@ import Navbar from "../Components/navbar";
 import Link from "next/link";
 
 export default function Posts() {
-  const [posts, setPosts] = useState([])
+  const [posts, setPosts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(5); // Number of posts per page
   
   useEffect(() => {
+    setIsLoading(true);
     getPosts().then(data => {
       const sortedPosts = [...data].reverse();
       setPosts(sortedPosts);
+      setIsLoading(false);
     });
-  }, [])
+  }, []);
 
   // Helper function to get likes count
   const getLikesCount = (post) => {
@@ -25,6 +30,33 @@ export default function Posts() {
     return post.post_comments ? post.post_comments.length : 0;
   };
 
+  // Get current posts
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
+  
+  // Calculate total pages
+  const totalPages = Math.ceil(posts.length / postsPerPage);
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  
+  // Go to next page
+  const nextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+      window.scrollTo(0, 0); // Scroll to top when changing pages
+    }
+  };
+  
+  // Go to previous page
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+      window.scrollTo(0, 0); // Scroll to top when changing pages
+    }
+  };
+
   return (
     <>
       <Navbar/>
@@ -32,8 +64,10 @@ export default function Posts() {
         <h1 className="text-3xl font-bold text-center mb-8">Posts</h1>
         
         <div className="grid gap-6">
-          {posts.length > 0 ? (
-            posts.map((post, index) => (
+          {isLoading ? (
+            <p className="text-center text-gray-500">Loading posts...</p>
+          ) : currentPosts.length > 0 ? (
+            currentPosts.map((post, index) => (
               <div key={post.id || index} className="flex justify-center">
                 <div className="border border-cyan-500 rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow duration-300 max-w-md w-full">
                   <Link href={`/posts/${post.id}`}>
@@ -91,9 +125,61 @@ export default function Posts() {
               </div>
             ))
           ) : (
-            <p className="text-center text-gray-500">Loading posts...</p>
+            <p className="text-center text-gray-500">No posts found.</p>
           )}
         </div>
+        
+        {/* Pagination */}
+        {!isLoading && posts.length > 0 && (
+          <div className="flex justify-center items-center mt-8 space-x-2">
+            <button
+              onClick={prevPage}
+              disabled={currentPage === 1}
+              className={`px-4 py-2 rounded-md ${
+                currentPage === 1
+                  ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                  : 'bg-cyan-500 text-white hover:bg-cyan-600'
+              }`}
+            >
+              Previous
+            </button>
+            
+            <div className="flex space-x-2">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((number) => (
+                <button
+                  key={number}
+                  onClick={() => paginate(number)}
+                  className={`px-3 py-1 rounded-md ${
+                    currentPage === number
+                      ? 'bg-cyan-600 text-white'
+                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  }`}
+                >
+                  {number}
+                </button>
+              ))}
+            </div>
+            
+            <button
+              onClick={nextPage}
+              disabled={currentPage === totalPages}
+              className={`px-4 py-2 rounded-md ${
+                currentPage === totalPages
+                  ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                  : 'bg-cyan-500 text-white hover:bg-cyan-600'
+              }`}
+            >
+              Next
+            </button>
+          </div>
+        )}
+        
+        {/* Page indicator */}
+        {!isLoading && posts.length > 0 && (
+          <div className="text-center mt-4 text-gray-600">
+            Page {currentPage} of {totalPages}
+          </div>
+        )}
       </div>
     </>
   );

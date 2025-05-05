@@ -33,11 +33,11 @@ export default function Profile() {
     <>
       <Navbar/>
       <div className="container mx-auto px-4 pt-16 pb-8 max-w-4xl">
-        <h2 className="text-2xl font-bold mb-4">Profile</h2>
+        <h2 className="text-2xl font-bold mb-4 text-black">Profile</h2>
         
         {isLoading && (
           <div className="text-center py-8">
-            <p>Loading profile...</p>
+            <p className="text-black">Loading profile...</p>
           </div>
         )}
         
@@ -58,24 +58,24 @@ export default function Profile() {
                 />
               )}
               <div>
-                <h3 className="text-xl font-semibold">
+                <h3 className="text-xl font-semibold text-black">
                   {profile.user?.username || 'User'}
                 </h3>
                 {profile.location && (
-                  <p className="text-gray-600">{profile.location}</p>
+                  <p className="text-black">{profile.location}</p>
                 )}
               </div>
             </div>
-            <h2>BIO</h2>
-            <h3>
-            {profile.bio}   
+            <h2 className="text-black font-bold">BIO</h2>
+            <h3 className="text-black">
+              {profile.bio}   
             </h3>
             <button 
               type="button"
-              onClick={() => router.push(profile?.id ? `/profile/${profile.id}` : '/edit-profile')} // Navigate to the edit profile page
+              onClick={() => router.push(profile?.id ? `/profile/${profile.id}` : '/edit-profile')}
               className="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-2 px-4 rounded-md shadow-sm transition-colors duration-300 flex items-center justify-center space-x-1 mt-4"
             >
-              <span>Edit Profile</span> {/* Changed from "Edit Post" to "Edit Profile" */}
+              <span>Edit Profile</span>
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
               </svg>
@@ -83,7 +83,7 @@ export default function Profile() {
 
             {profile && profile.user_posts && (
                 <div className="mt-8">
-                    <h2 className="text-2xl font-bold mb-4">My Posts</h2>
+                    <h2 className="text-2xl font-bold mb-4 text-black">My Posts</h2>
                     
                     {profile.user_posts.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -97,24 +97,24 @@ export default function Profile() {
                             <img src={post.image_path} alt={post.title} className="h-40 w-full object-cover" />
                             )}
                             <div className="p-4">
-                            <h3 className="font-bold">{post.title}</h3>
-                            <p className="text-sm text-gray-600 mt-1">
+                            <h3 className="font-bold text-black">{post.title}</h3>
+                            <p className="text-sm text-black mt-1">
                                 {post.description.length > 100 ? `${post.description.substring(0, 100)}...` : post.description}
                             </p>
-                            <p className="text-xs text-gray-500 mt-2">{new Date(post.created_at).toLocaleDateString()}</p>
+                            <p className="text-xs text-black mt-2">{new Date(post.created_at).toLocaleDateString()}</p>
                             </div>
                         </div>
                         ))}
                     </div>
                     ) : (
-                    <p className="text-gray-500">No posts yet.</p>
+                    <p className="text-black">No posts yet.</p>
                     )}
                 </div>
                 )}
 
                 {profile && profile.user_likes && (
                 <div className="mt-8">
-                    <h2 className="text-2xl font-bold mb-4">Liked Post</h2>
+                    <h2 className="text-2xl font-bold mb-4 text-black">Liked Post</h2>
                     
                     {profile.user_likes.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -128,14 +128,14 @@ export default function Profile() {
                             <img src={i.post.image_path} alt={i.post.title} className="h-40 w-full object-cover" />
                             )}
                             <div className="p-4">
-                            <h3 className="font-bold">{i.post.title}</h3>
-                            <h3 className="font-bold">{i.post.description}</h3>
+                            <h3 className="font-bold text-black">{i.post.title}</h3>
+                            <p className="text-sm text-black mt-1">{i.post.description}</p>
                             </div>
                         </div>
                         ))}
                     </div>
                     ) : (
-                    <p className="text-gray-500">No posts yet.</p>
+                    <p className="text-black">No posts yet.</p>
                     )}
                 </div>
                 )}
