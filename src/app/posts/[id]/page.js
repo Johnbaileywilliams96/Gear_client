@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import Navbar from "@/app/Components/navbar";
 import { useRouter } from "next/navigation";
 import { toggleLike } from "@/app/data/likes";
+import Link from "next/link";
 
 export default function Post() {
   const [post, setPost] = useState(null)
@@ -77,7 +78,9 @@ export default function Post() {
                 {/* Post title and username side by side */}
                 <div className="flex justify-between items-center mb-2">
                   <h1 className="text-xl font-bold text-cyan-700">{post.title}</h1>
+                  <Link href={`${post.post_profile.id}/post_profile`}>
                   <span className="text-sm text-cyan-600"><span className="font-medium">{post.user.username}</span></span>
+                  </Link>
                 </div>
                 
                 {post.image_path && (

@@ -23,13 +23,12 @@ export default function Edit() {
     useEffect(() => {
         getPostsById(id)
           .then(data => {
-            console.log("Post data:", data);
-            // Populate form fields with existing data
+           
             setTitle(data.title);
             setDescription(data.description);
             setOriginalImagePath(data.image_path);
             
-            // Extract tag IDs from post_tags
+
             if (data.post_tags && data.post_tags.length > 0) {
               const postTagIds = data.post_tags.map(pt => pt.tag.id);
               setSelectedTags(postTagIds);
@@ -46,10 +45,7 @@ export default function Edit() {
 
     useEffect(() => {
       getTags().then(data => {
-        console.log("Tags received:", data);
-        // Transform the data to include the ID at the top level
         const processedTags = data.map(tag => {
-          // Get the ID from the first post_tag if available, otherwise generate a temporary ID
           const id = tag.post_tags && tag.post_tags.length > 0 && tag.post_tags[0].tag ? 
                      tag.post_tags[0].tag.id : tag.name;
           return {
@@ -78,14 +74,12 @@ export default function Edit() {
     };
 
     const handleTagChange = (tagId) => {
-      console.log("Tag clicked:", tagId);
-      
+
       setSelectedTags(prevSelectedTags => {
         const newTags = prevSelectedTags.includes(tagId) 
           ? prevSelectedTags.filter(id => id !== tagId)
           : [...prevSelectedTags, tagId];
         
-        console.log("New selectedTags will be:", newTags);
         return newTags;
       });
     };
