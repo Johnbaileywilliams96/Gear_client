@@ -17,7 +17,7 @@ export default function Profile() {
     setIsLoading(true);
     getCurrentUser()
       .then(data => {
-        console.log("Profile data:", data); // For debugging
+
         setProfile(data);
         setIsLoading(false);
       })

@@ -18,10 +18,7 @@ export default function CreatePost() {
   
   useEffect(() => {
     getTags().then(data => {
-      console.log("Tags received:", data);
-      // Transform the data to include the ID at the top level
       const processedTags = data.map(tag => {
-        // Get the ID from the first post_tag if available, otherwise generate a temporary ID
         const id = tag.post_tags && tag.post_tags.length > 0 && tag.post_tags[0].tag ? 
                    tag.post_tags[0].tag.id : tag.name;
         return {
@@ -39,7 +36,7 @@ export default function CreatePost() {
     e.preventDefault();
     setIsLoading(true);
     
-    // Create post object from form data
+
     const postData = {
       title: title,
       description: description,
@@ -51,7 +48,6 @@ export default function CreatePost() {
       postData.image_path = image_path;
     }
     
-    console.log("Sending post data:", postData);
     
     addPost(postData)
       .then(newPost => {
@@ -89,14 +85,12 @@ export default function CreatePost() {
   };
 
   const handleTagChange = (tagId) => {
-    console.log("Tag clicked:", tagId);
     
     setSelectedTags(prevSelectedTags => {
       const newTags = prevSelectedTags.includes(tagId) 
         ? prevSelectedTags.filter(id => id !== tagId)
         : [...prevSelectedTags, tagId];
       
-      console.log("New selectedTags will be:", newTags);
       return newTags;
     });
   };

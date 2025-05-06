@@ -21,7 +21,7 @@ export default function Edit() {
         setIsLoading(true);
         getCurrentUser(id)
           .then(data => {
-            console.log("Profile data:", data); // For debugging
+    
             setProfile(data);
             setBio(data.bio)
             setOriginalImagePath(data.image_path)
@@ -71,7 +71,6 @@ export default function Edit() {
                 setError('Failed to update post. Please try again.');
             });
 
-            console.log({'profileData': profileData})
     }
     
 

@@ -7,41 +7,59 @@ import Link from "next/link";
 
 export default function Posts() {
   const [posts, setPosts] = useState([]);
+  const [filteredPosts, setFilteredPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(5); // Number of posts per page
+  const [searchTerm, setSearchTerm] = useState("");
+  const [postsPerPage] = useState(5); 
   
   useEffect(() => {
     setIsLoading(true);
     getPosts().then(data => {
       const sortedPosts = [...data].reverse();
       setPosts(sortedPosts);
+      setFilteredPosts(sortedPosts);
       setIsLoading(false);
     });
   }, []);
 
-  // Helper function to get likes count
+  // Filter posts when search term changes
+  useEffect(() => {
+    if (searchTerm.trim() === "") {
+      setFilteredPosts(posts);
+    } else {
+      const results = posts.filter(post =>
+        post.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredPosts(results);
+    }
+    setCurrentPage(1); // Reset to first page when search changes
+  }, [searchTerm, posts]);
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const clearSearch = () => {
+    setSearchTerm("");
+  };
+ 
   const getLikesCount = (post) => {
     return post.post_likes ? post.post_likes.length : 0;
   };
 
-  // Helper function to get comments count
   const getCommentsCount = (post) => {
     return post.post_comments ? post.post_comments.length : 0;
   };
 
-  // Get current posts
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
+  const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
   
-  // Calculate total pages
-  const totalPages = Math.ceil(posts.length / postsPerPage);
+  const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
 
-  // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
   
-  // Go to next page
   const nextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
@@ -49,7 +67,6 @@ export default function Posts() {
     }
   };
   
-  // Go to previous page
   const prevPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
@@ -62,6 +79,39 @@ export default function Posts() {
       <Navbar/>
       <div className="container mx-auto px-4 pt-16 pb-8 max-w-4xl">
         <h1 className="text-3xl font-bold text-center mb-8">Posts</h1>
+        
+        {/* Search Bar */}
+        <div className="mb-6 flex justify-start">
+          <div className="relative w-64">
+            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <svg className="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+              </svg>
+            </div>
+            <input 
+              type="text" 
+              className="w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-cyan-500 focus:border-cyan-500" 
+              placeholder="Search post titles..." 
+              value={searchTerm}
+              onChange={handleSearchChange}
+            />
+            {searchTerm && (
+              <button 
+                onClick={clearSearch} 
+                className="absolute right-2 bottom-1.5 bg-cyan-600 hover:bg-cyan-700 text-white font-medium rounded-lg text-xs px-2 py-1"
+              >
+                Clear
+              </button>
+            )}
+          </div>
+        </div>
+        
+        {/* Search Results Count */}
+        {searchTerm && (
+          <div className="mb-4 text-gray-600">
+            Found {filteredPosts.length} {filteredPosts.length === 1 ? 'post' : 'posts'} matching "{searchTerm}"
+          </div>
+        )}
         
         <div className="grid gap-6">
           {isLoading ? (
@@ -125,12 +175,14 @@ export default function Posts() {
               </div>
             ))
           ) : (
-            <p className="text-center text-gray-500">No posts found.</p>
+            <p className="text-center text-gray-500">
+              {searchTerm ? "No posts matching your search." : "No posts found."}
+            </p>
           )}
         </div>
         
         {/* Pagination */}
-        {!isLoading && posts.length > 0 && (
+        {!isLoading && filteredPosts.length > 0 && (
           <div className="flex justify-center items-center mt-8 space-x-2">
             <button
               onClick={prevPage}
@@ -175,7 +227,7 @@ export default function Posts() {
         )}
         
         {/* Page indicator */}
-        {!isLoading && posts.length > 0 && (
+        {!isLoading && filteredPosts.length > 0 && (
           <div className="text-center mt-4 text-gray-600">
             Page {currentPage} of {totalPages}
           </div>

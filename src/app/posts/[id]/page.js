@@ -74,8 +74,11 @@ export default function Post() {
             <>
               {/* Post Card - Keeping original size */}
               <div className="border border-cyan-500 rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow duration-300 max-w-md w-full">
-                {/* Post title */}
-                <h1 className="text-xl font-bold text-cyan-700 mb-2">{post.title}</h1>
+                {/* Post title and username side by side */}
+                <div className="flex justify-between items-center mb-2">
+                  <h1 className="text-xl font-bold text-cyan-700">{post.title}</h1>
+                  <span className="text-sm text-cyan-600"><span className="font-medium">{post.user.username}</span></span>
+                </div>
                 
                 {post.image_path && (
                   <div className="mb-4">
