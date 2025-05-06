@@ -84,6 +84,7 @@ export default function Profile() {
                         {profile.user_posts.map(post => (
                         <div 
                             key={post.id} 
+                            onClick={() => router.push(`/posts/${post.id}`)}
                             className="bg-white rounded-lg shadow overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
                         >
                             {post.image_path && (
@@ -113,7 +114,8 @@ export default function Profile() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {profile.user_likes.map(i => (
                         <div 
-                            key={i.post.id} 
+                            key={i.post.id}
+                            onClick={() => router.push(`/posts/${i.post.id}`)}
                             className="bg-white rounded-lg shadow overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
                         >
                             {i.post.image_path && (
