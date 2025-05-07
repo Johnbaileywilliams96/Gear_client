@@ -14,7 +14,7 @@ export default function CreatePost() {
   const [selectedTags, setSelectedTags] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const router = useRouter(); // Add router for navigation
+  const router = useRouter(); 
   
   useEffect(() => {
     getTags().then(data => {
@@ -43,7 +43,7 @@ export default function CreatePost() {
       tags: selectedTags
     };
     
-    // Add image if one is selected
+
     if (image_path) {
       postData.image_path = image_path;
     }
@@ -53,14 +53,14 @@ export default function CreatePost() {
       .then(newPost => {
         console.log('Post created successfully:', newPost);
         
-        // Reset form
+  
         setTitle('');
         setDescription('');
         setImagePath(null);
         setSelectedTags([]);
         setIsLoading(false);
         
-        router.push(`/posts`); // Navigate back to the post
+        router.push(`/posts`); 
         alert('Post created successfully!');
       })
       .catch(error => {
@@ -100,7 +100,7 @@ export default function CreatePost() {
       <Navbar/>
       <div className="flex justify-center items-center min-h-screen pt-16 pb-8 px-4">
         <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-2xl font-bold mb-6 text-center">Create New Post</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center text-black">Create New Post</h2>
           
           {error && (
             <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
@@ -141,7 +141,7 @@ export default function CreatePost() {
             
             <fieldset className="mb-6">
               <label className="block text-gray-700 text-sm font-bold mb-2">
-                Product Image
+                Post Image
               </label>
               <input 
                 type="file" 

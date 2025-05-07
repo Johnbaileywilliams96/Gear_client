@@ -160,7 +160,7 @@ export default function Edit() {
                         
                         <fieldset className="mb-6">
                           <label className="block text-gray-700 text-sm font-bold mb-2">
-                            Product Image
+                            Post Image
                           </label>
                           {originalImagePath && !image_path && (
                             <div className="mb-4">
