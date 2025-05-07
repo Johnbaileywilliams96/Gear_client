@@ -1,5 +1,6 @@
 "use client"
 
+import Navbar from "@/app/Components/navbar";
 import { getCurrentUser, updateProfile } from "@/app/data/profiles";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
@@ -76,7 +77,10 @@ export default function Edit() {
 
 
     return (
-        <div className="flex flex-col items-center justify-center max-w-2xl mx-auto px-4">
+        <>
+        <Navbar/>
+        {/* Added pt-16 class to add padding to the top of the content to prevent navbar overlap */}
+        <div className="flex flex-col items-center justify-center max-w-2xl mx-auto px-4 pt-16">
             <h1 className="text-center text-2xl font-bold my-6">Edit Profile</h1>
             <div className="w-full max-w-md">
                 <form onSubmit={handleEditProfile}>
@@ -141,5 +145,6 @@ export default function Edit() {
                 </form>
             </div>
         </div>
+        </>
     )
 }

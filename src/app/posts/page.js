@@ -80,8 +80,8 @@ export default function Posts() {
       <div className="container mx-auto px-4 pt-16 pb-8 max-w-4xl">
         <h1 className="text-3xl font-bold text-center mb-8">Posts</h1>
         
-        {/* Search Bar */}
-        <div className="mb-6 flex justify-start">
+        {/* Search Bar - Modified to be centered */}
+        <div className="mb-6 flex justify-center">
           <div className="relative w-64">
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
               <svg className="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -106,9 +106,9 @@ export default function Posts() {
           </div>
         </div>
         
-        {/* Search Results Count */}
+        {/* Search Results Count - Modified to be centered */}
         {searchTerm && (
-          <div className="mb-4 text-gray-600">
+          <div className="mb-4 text-gray-600 text-center">
             Found {filteredPosts.length} {filteredPosts.length === 1 ? 'post' : 'posts'} matching "{searchTerm}"
           </div>
         )}

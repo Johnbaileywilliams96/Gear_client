@@ -112,8 +112,8 @@ export default function Edit() {
 
     return (
         <>
-            <div className="container mx-auto px-4 pt-16 pb-8 max-w-4xl">
                 <Navbar/>
+            <div className="container mx-auto px-4 pt-16 pb-8 max-w-4xl">
                 <h1 className="text-3xl font-bold text-center mb-8">Edit Post</h1>
                 
                 {error && (
