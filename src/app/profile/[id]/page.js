@@ -76,71 +76,70 @@ export default function Edit() {
 
 
     return (
-        <>
-        <h1>Edit Profile</h1>
-        <div>
-        <form onSubmit={handleEditProfile}>
-        <fieldset className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2"> 
-            Bio
-            </label>
-            <input 
-            type="text" 
-            id="bio"
-            value={bio}
-            onChange={evt => setBio(evt.target.value)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            placeholder="Enter bio"
-            required 
-            autoFocus 
-            />
-        </fieldset>
+        <div className="flex flex-col items-center justify-center max-w-2xl mx-auto px-4">
+            <h1 className="text-center text-2xl font-bold my-6">Edit Profile</h1>
+            <div className="w-full max-w-md">
+                <form onSubmit={handleEditProfile}>
+                    <fieldset className="mb-4">
+                        <label className="block text-gray-700 text-sm font-bold mb-2"> 
+                        Bio
+                        </label>
+                        <input 
+                        type="text" 
+                        id="bio"
+                        value={bio}
+                        onChange={evt => setBio(evt.target.value)}
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        placeholder="Enter bio"
+                        required 
+                        autoFocus 
+                        />
+                    </fieldset>
 
-        <fieldset className="mb-6">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-            Profile Image
-            </label>
-            {originalImagePath && !profile_image && (
-            <div className="mb-4">
-                <p className="text-sm text-gray-500 mb-2">Current image:</p>
-                <img src={originalImagePath} alt="Current image" className="max-w-full h-auto max-h-48 rounded" />
+                    <fieldset className="mb-6">
+                        <label className="block text-gray-700 text-sm font-bold mb-2">
+                        Profile Image
+                        </label>
+                        {originalImagePath && !profile_image && (
+                        <div className="mb-4">
+                            <p className="text-sm text-gray-500 mb-2">Current image:</p>
+                            <img src={originalImagePath} alt="Current image" className="max-w-full h-auto max-h-48 rounded" />
+                        </div>
+                        )}
+                        <input 
+                        type="file" 
+                        id="image_path" 
+                        onChange={createProductImageString} 
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        />
+                        {profile_image && (
+                        <div className="mt-2">
+                            <p className="text-sm text-gray-500 mb-2">New image preview:</p>
+                            <img src={profile_image} alt="Product preview" className="max-w-full h-auto max-h-48" />
+                        </div>
+                        )}
+                    </fieldset>
+                    <div className="flex items-center justify-center space-x-4">
+                        <button
+                        type="button"
+                        onClick={() => router.push(`/profile`)}
+                        className="bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-colors"
+                        >
+                        Cancel
+                        </button>
+                        <button
+                        type="submit"
+                        disabled={isLoading}
+                        className={`
+                            ${isLoading ? 'bg-yellow-300' : 'bg-yellow-400 hover:bg-yellow-500'} 
+                            text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-colors
+                        `}
+                        >
+                        {isLoading ? 'Updating...' : 'Update Profile'}
+                        </button>
+                    </div>
+                </form>
             </div>
-            )}
-            <input 
-            type="file" 
-            id="image_path" 
-            onChange={createProductImageString} 
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
-            {profile_image && (
-            <div className="mt-2">
-                <p className="text-sm text-gray-500 mb-2">New image preview:</p>
-                <img src={profile_image} alt="Product preview" className="max-w-full h-auto max-h-48" />
-            </div>
-            )}
-        </fieldset>
-        <div className="flex items-center justify-center space-x-4">
-            <button
-            type="button"
-            onClick={() => router.push(`/profile`)}
-            className="bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-colors"
-            >
-            Cancel
-            </button>
-            <button
-            type="submit"
-            disabled={isLoading}
-            className={`
-                ${isLoading ? 'bg-yellow-300' : 'bg-yellow-400 hover:bg-yellow-500'} 
-                text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-colors
-            `}
-            >
-            {isLoading ? 'Updating...' : 'Update Profile'}
-            </button>
         </div>
-        </form>
-
-        </div>
-        </>
     )
 }

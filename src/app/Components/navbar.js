@@ -46,8 +46,8 @@ export default function Navbar() {
   return (
     <nav className="bg-yellow-400 p-2 fixed top-0 w-full shadow-md z-10">
       <div className="container mx-auto flex justify-between items-center">
-        {/* Logo */}
-        <Link href="/" className="flex items-center">
+        {/* Logo with GearSpot text */}
+        <Link href="/" className="flex items-center space-x-2">
             <div className="h-10 w-10 rounded-full overflow-hidden flex items-center justify-center bg-white">
                 <img 
                     src="/images/gear_spot.png" 
@@ -55,6 +55,7 @@ export default function Navbar() {
                     className="h-full w-auto object-contain" 
                 />
             </div>
+            <span className="font-bold text-black text-lg">GearSpot</span>
         </Link>
 
         {/* Mobile menu button */}
