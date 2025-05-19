@@ -23,7 +23,7 @@ export default function Posts() {
     });
   }, []);
 
-  // Filter posts when search term changes
+ 
   useEffect(() => {
     if (searchTerm.trim() === "") {
       setFilteredPosts(posts);

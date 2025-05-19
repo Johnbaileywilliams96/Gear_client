@@ -20,7 +20,7 @@ export default function CreateComment() {
 
     useEffect(() => {
         getPostsById(id).then(data => {
-          console.log("Post data:", data); // For debugging
+          console.log("Post data:", data); 
           setPost(data);
         })
       }, [id])

@@ -86,7 +86,7 @@ export default function Edit() {
 
     const handleEditPost = (e) => {
         e.preventDefault();
-        setIsLoading(true); // Set loading to true while submitting
+        setIsLoading(true); 
 
         const postData = {
             title: title,
@@ -101,7 +101,7 @@ export default function Edit() {
         editPost(id, postData)
             .then(updatedPost => {
                 console.log('Post updated successfully:', updatedPost);
-                router.push(`/posts/${id}`); // Navigate back to the post
+                router.push(`/posts/${id}`);
             })
             .catch(error => {
                 console.error('Failed to update post:', error);
