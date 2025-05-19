@@ -1,9 +1,9 @@
 "use client"
 
 import Link from "next/link"
-import Navbar from "./Components/navbar"
+import Navbar from "../Components/navbar"
 
-export default function Home() {
+export default function GearSpot() {
   return (
     <>
       <Navbar/>
